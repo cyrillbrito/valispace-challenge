@@ -6,3 +6,8 @@ export interface Employee {
   role: string;
   name: string;
 }
+
+export interface Post {
+  date: string;
+  text: string;
+}

@@ -6,3 +6,8 @@ h1 {
 .spacer {
   flex: 1 1 auto;
 }
+
+.content-body {
+  width: 80%;
+  margin: auto;
+}

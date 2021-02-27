@@ -1,0 +1,37 @@
+<mat-card>
+  <mat-card-header>
+
+    <mat-card-title>Create Post</mat-card-title>
+    <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
+
+  </mat-card-header>
+  <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+  <mat-card-content>
+    <mat-form-field appearance="outline">
+      <textarea matInput placeholder="Post text" rows="5"></textarea>
+    </mat-form-field>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button>EDIT</button>
+  </mat-card-actions>
+</mat-card>
+
+<mat-divider></mat-divider>
+
+<mat-card *ngFor="let post of posts$ | async">
+  <mat-card-header>
+    <!-- <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>Shiba Inu</mat-card-title>
+    <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
+    {{ post.date }}
+  </mat-card-header>
+  <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+  <mat-card-content>
+    <p>
+      {{ post.text }}
+    </p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button>EDIT</button>
+  </mat-card-actions>
+</mat-card>
