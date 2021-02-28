@@ -1,0 +1,10 @@
+<mat-form-field appearance="outline">
+  <textarea #area matInput placeholder="Post text" rows="5" (keydown.@)="test2()" [matAutocomplete]="auto"
+    [matAutocompleteDisabled]="!show"></textarea>
+</mat-form-field>
+
+<mat-autocomplete #auto="matAutocomplete" (closed)="test4($event)" (optionSelected)="test3($event)">
+  <mat-option *ngFor="let employee of employeesOptions$ | async" [value]="employee.username">
+    {{ employee.username }}
+  </mat-option>
+</mat-autocomplete>
