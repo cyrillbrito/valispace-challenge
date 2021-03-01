@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatDialog } from '@angular/material';
 import { Observable } from 'rxjs';
@@ -13,7 +13,8 @@ import { PostsService } from 'src/app/services/posts.service';
 })
 export class PostTextareaComponent implements OnInit {
 
-  posts$: Observable<Post[]>;
+  @Input() post: Post;
+
   employeesOptions$: Observable<Employee[]>;
 
   myControl = new FormControl();
@@ -36,11 +37,7 @@ export class PostTextareaComponent implements OnInit {
     public dialog: MatDialog,
   ) { }
 
-
-
-
   ngOnInit() {
-    this.posts$ = this.postsService.list();
     this.employeesOptions$ = this.employeesService.list();
   }
 
@@ -85,6 +82,7 @@ export class PostTextareaComponent implements OnInit {
 
     this.myControl.setValue(this.toBe);
     this.area.nativeElement.value = this.toBe;
+    this.post.text = this.toBe;
 
 
     this.success = true;

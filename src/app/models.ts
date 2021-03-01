@@ -11,3 +11,13 @@ export interface Post {
   date: string;
   text: string;
 }
+
+export interface PostToView {
+  date: string;
+  segments: PostSegment[];
+}
+
+export interface PostSegment {
+  text: string;
+  employee?: Employee;
+}
