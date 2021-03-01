@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import {
   MatAutocompleteModule,
   MatButtonModule,
@@ -8,6 +8,7 @@ import {
   MatDialogModule,
   MatDividerModule,
   MatFormFieldModule,
+  MatIconModule,
   MatInputModule
 } from '@angular/material';
 import { HomeRoutingModule } from './home-routing.module';
@@ -27,7 +28,10 @@ import { PostTextareaComponent } from './post-textarea/post-textarea.component';
     MatDividerModule,
     MatFormFieldModule,
     MatInputModule,
-    ReactiveFormsModule,
+    // ReactiveFormsModule,
+    FormsModule,
+    MatIconModule,
+    MatButtonModule,
   ]
 })
 export class HomeModule { }

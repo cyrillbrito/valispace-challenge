@@ -27,17 +27,21 @@ export class HomeComponent implements OnInit {
   }
 
   createPost(): void {
-    console.log('lll', this.post);
+    this.post.date = new Date().toLocaleString();
     this.postsService.add(this.post).subscribe();
   }
-
-
 
   openEmployeeDetails(employee: Employee): void {
     this.dialog.open(this.tempRef, {
       data: employee
     });
+  }
 
+  editPost(post: PostToView): void {
+    post.editing = true;
+  }
 
+  cancelEdit(post: PostToView): void {
+    post.editing = false;
   }
 }

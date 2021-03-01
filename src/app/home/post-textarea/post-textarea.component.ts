@@ -82,7 +82,7 @@ export class PostTextareaComponent implements OnInit {
 
     this.myControl.setValue(this.toBe);
     this.area.nativeElement.value = this.toBe;
-    this.post.text = this.toBe;
+    // this.post.text = this.toBe;
 
 
     this.success = true;

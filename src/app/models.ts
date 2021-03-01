@@ -15,6 +15,7 @@ export interface Post {
 export interface PostToView {
   date: string;
   segments: PostSegment[];
+  editing?: boolean;
 }
 
 export interface PostSegment {

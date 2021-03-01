@@ -11,7 +11,7 @@
 
   </mat-card-content>
   <mat-card-actions>
-    <button mat-button (click)="createPost()">POST</button>
+    <button mat-button (click)="createPost()" class="card-action">CREATE POST</button>
   </mat-card-actions>
 </mat-card>
 
@@ -19,13 +19,18 @@
 
 <mat-card *ngFor="let post of posts$ | async">
   <mat-card-header>
-    <!-- <div mat-card-avatar class="example-header-image"></div>
-    <mat-card-title>Shiba Inu</mat-card-title> highlight
-    <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
-    {{ post.date }}
+
+    <mat-card-subtitle>{{ post.date }}</mat-card-subtitle>
+
+    <button mat-icon-button (click)="editPost(post)" class="card-action" *ngIf="!post.editing">
+      <mat-icon>edit</mat-icon>
+    </button>
   </mat-card-header>
   <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
-  <mat-card-content>
+  <mat-card-content *ngIf="post.editing">
+    <app-post-textarea [post]="post"></app-post-textarea>
+  </mat-card-content>
+  <mat-card-content *ngIf="!post.editing">
     <p>
       <ng-container *ngFor="let segment of post.segments">
         {{ segment.text }}
@@ -35,8 +40,9 @@
       </ng-container>
     </p>
   </mat-card-content>
-  <mat-card-actions>
-    <button mat-button>EDIT</button>
+  <mat-card-actions *ngIf="post.editing">
+    <button mat-button class="card-action" (click)="cancelEdit(post)">CANCEL</button>
+    <button mat-button class="card-action">UPDATE POST</button>
   </mat-card-actions>
 </mat-card>
 

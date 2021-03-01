@@ -64,12 +64,14 @@ export class PostsService {
     const matches = post.text.match(r);
 
     // Repeat for each
-    for (const match of matches) {
-      const username = match.slice(1);
-      const employee = employees.find(e => e.username === username);
-      if (employee) {
-        const index = post.text.indexOf(match);
-        post.text = post.text.slice(0, index + 1) + employee.id + post.text.slice(index + 1 + username.length);
+    if (matches) {
+      for (const match of matches) {
+        const username = match.slice(1);
+        const employee = employees.find(e => e.username === username);
+        if (employee) {
+          const index = post.text.indexOf(match);
+          post.text = post.text.slice(0, index + 1) + employee.id + post.text.slice(index + 1 + username.length);
+        }
       }
     }
 
