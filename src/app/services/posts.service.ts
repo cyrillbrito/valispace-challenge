@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import { forkJoin, Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-import { Employee, Post, PostSegment, PostToView } from '../models';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Employee, Post, PostSegment } from '../models';
 import { EmployeesService } from './employees.service';
 
 const INITIAL_DATA: Post[] = [
-  { date: '12-01', text: 'alsdlamsdmsad' },
-  { date: '13-02', text: 'asbsad' },
-  { date: '14-12', text: 'afffsbsad' },
+  { id: 1, date: new Date(2021, 2, 1).toLocaleString(), text: 'Welcome to the company @1!!!' },
+  { id: 2, date: new Date(2021, 2, 2).toLocaleString(), text: 'Thanks, @2, @3, @4' },
+  { id: 3, date: new Date(2021, 2, 3).toLocaleString(), text: '@3 @2 @5' },
+  { id: 3, date: new Date(2021, 2, 3).toLocaleString(), text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.Ut tortor augue, commodo id commodo vitae, aliquam sit amet neque.Sed eu bibendum arcu.Suspendisse non tincidunt ligula.Praesent vel ipsum velit.Proin ante lacus, vulputate et accumsan sed, facilisis quis eros.Proin et imperdiet ipsum.Proin eget dictum lacus.Phasellus elementum eros eget urna faucibus luctus.Praesent ac sollicitudin nisi, at laoreet enim.Suspendisse potenti.Pellentesque efficitur tellus ac purus imperdiet luctus.Vestibulum id nulla ut est porta hendrerit.Aliquam pulvinar pretium diam at aliquam.' },
 ];
 
 @Injectable({
@@ -15,9 +16,13 @@ const INITIAL_DATA: Post[] = [
 })
 export class PostsService {
 
+  private employees: Employee[];
+
   constructor(
     private employeesService: EmployeesService,
-  ) { }
+  ) {
+    this.employeesService.list().subscribe(employees => this.employees = employees);
+  }
 
 
   public list(): Observable<Post[]> {
@@ -32,45 +37,42 @@ export class PostsService {
     return of(INITIAL_DATA);
   }
 
-  public listToView(): Observable<PostToView[]> {
-    return forkJoin([this.employeesService.list(), this.list()])
-      .pipe(map(results => results[1].map(post => this.parsePostToView(post, results[0]))));
-  }
+  public create(post: Post): Observable<void> {
 
-  public add(post: Post): Observable<void> {
+    return this.list().pipe(map(posts => {
 
-    return forkJoin([this.employeesService.list(), this.list()]).pipe(map(results => {
-
-      const [employees, posts] = results;
-
-      this.parsePostToSave(post, employees);
+      post.id = posts[posts.length - 1].id + 1;
+      this.parsePostToSave(post);
 
       posts.push(post);
       localStorage.setItem('valispace-challenge-posts', JSON.stringify(posts));
     }));
   }
 
-  public edit(): Observable<void> {
-    return of();
+  public update(post: Post): Observable<void> {
+
+    return this.list().pipe(map(posts => {
+
+      const index = posts.findIndex(p => p.id === post.id);
+      posts[index] = post;
+
+      this.parsePostToSave(post);
+      localStorage.setItem('valispace-challenge-posts', JSON.stringify(posts));
+    }));
   }
 
-  public remove(): Observable<void> {
-    return of();
-  }
+  private parsePostToSave(post: Post): Post {
 
-  private parsePostToSave(post: Post, employees: Employee[]): Post {
+    const regExp = /@[\w\-_]+/gi;
+    const matches = post.text.match(regExp);
 
-    const r = /@[\w\-_]+/gi;
-    const matches = post.text.match(r);
-
-    // Repeat for each
     if (matches) {
       for (const match of matches) {
         const username = match.slice(1);
-        const employee = employees.find(e => e.username === username);
+        const employee = this.employees.find(e => e.username === username);
         if (employee) {
           const index = post.text.indexOf(match);
-          post.text = post.text.slice(0, index + 1) + employee.id + post.text.slice(index + 1 + username.length);
+          post.text = this.replaceInIndex(post.text, index + 1, employee.id, username.length);
         }
       }
     }
@@ -78,27 +80,27 @@ export class PostsService {
     return post;
   }
 
-  private parsePostToView(post: Post, employees: Employee[]): PostToView {
+  public getPostSegments(post: Post): PostSegment[] {
 
     const segments: PostSegment[] = [];
 
-    const r = /@\d+/g;
-    const matches = post.text.match(r);
+    const regExp = /@\d+/g;
+    const matches = post.text.match(regExp);
 
     let lastIndex = 0;
 
-    // Repeat for each
     if (matches) {
       for (const match of matches) {
         const id = Number(match.slice(1));
-        const employee = employees.find(e => e.id === id);
+        const employee = this.employees.find(e => e.id === id);
         if (employee) {
           const index = post.text.indexOf(match, lastIndex);
           if (lastIndex < index) {
             segments.push({ text: post.text.substr(lastIndex, index - lastIndex) });
           }
           segments.push({ text: '@' + employee.username, employee });
-          lastIndex = index + match.length;
+          post.text = this.replaceInIndex(post.text, index + 1, employee.username, match.length - 1);
+          lastIndex = index + employee.username.length + 1;
         }
       }
     }
@@ -107,11 +109,11 @@ export class PostsService {
       segments.push({ text: post.text.substr(lastIndex, post.text.length - lastIndex) });
     }
 
-    return { date: post.date, segments };
-
+    return segments;
   }
 
-  private parsePostToEdit(): void {
-
+  private replaceInIndex(str: string, index: number, replacer: any, length: number): string {
+    return str.slice(0, index) + replacer + str.slice(index + length);
   }
+
 }

@@ -1,7 +1,7 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Observable } from 'rxjs';
-import { Employee, Post, PostToView } from '../../models';
+import { Post } from '../../models';
 import { PostsService } from '../../services/posts.service';
 
 @Component({
@@ -11,10 +11,9 @@ import { PostsService } from '../../services/posts.service';
 })
 export class PostsComponent implements OnInit {
 
-  posts$: Observable<PostToView[]>;
+  posts$: Observable<Post[]>;
 
   post = {} as Post;
-
 
   constructor(
     private postsService: PostsService,
@@ -22,12 +21,12 @@ export class PostsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.posts$ = this.postsService.listToView();
+    this.posts$ = this.postsService.list();
   }
 
   createPost(): void {
     this.post.date = new Date().toLocaleString();
-    this.postsService.add(this.post).subscribe();
+    this.postsService.create(this.post).subscribe();
   }
 
 }

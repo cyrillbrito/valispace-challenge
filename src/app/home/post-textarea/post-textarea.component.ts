@@ -1,10 +1,8 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatAutocompleteSelectedEvent, MatDialog } from '@angular/material';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
 import { Observable } from 'rxjs';
 import { Employee, Post } from 'src/app/models';
 import { EmployeesService } from 'src/app/services/employees.service';
-import { PostsService } from 'src/app/services/posts.service';
 
 @Component({
   selector: 'app-post-textarea',
@@ -15,79 +13,45 @@ export class PostTextareaComponent implements OnInit {
 
   @Input() post: Post;
 
-  employeesOptions$: Observable<Employee[]>;
+  @ViewChild('textarea', { static: false }) textarea: ElementRef<HTMLTextAreaElement>;
 
-  myControl = new FormControl();
-  options: string[] = ['One', 'Two', 'Three'];
+  public employees$: Observable<Employee[]>;
+  public show: boolean;
 
-  @ViewChild('area', { static: false }) area: ElementRef<HTMLTextAreaElement>;
-
-
-  show = false;
-
-  text: string;
-  cursor: number
-  success: boolean;
-
-  toBe: string;
+  private original: string;
+  private cursor: number;
+  private success: boolean;
 
   constructor(
-    private postsService: PostsService,
     private employeesService: EmployeesService,
-    public dialog: MatDialog,
   ) { }
 
   ngOnInit() {
-    this.employeesOptions$ = this.employeesService.list();
+    this.employees$ = this.employeesService.list();
   }
 
-  test2(): void {
-    console.log('show')
+  open(): void {
     this.show = true;
 
-    this.text = this.area.nativeElement.value;
-    this.cursor = this.area.nativeElement.selectionStart;
+    this.original = this.post.text;
+    this.cursor = this.textarea.nativeElement.selectionStart;
   }
 
-  test4(event): void {
+  optionSelected(event: MatAutocompleteSelectedEvent): void {
+    const selected = event.option.value;
+    this.post.text = this.original.slice(0, this.cursor) + '@' + selected + this.original.slice(this.cursor);
+    this.success = true;
+  }
 
-    console.log('close')
+  close(): void {
 
     if (!this.success) {
-      this.myControl.setValue(this.text);
-      this.area.nativeElement.value = this.text;
+      this.post.text = this.original;
     }
 
-    this.area.nativeElement.setSelectionRange(this.cursor, this.cursor);
+    this.textarea.nativeElement.setSelectionRange(this.cursor, this.cursor);
 
-    this.text = null;
-    this.cursor = null;
-    this.success = null;
+    this.success = false;
     this.show = false;
   }
-
-  test3(event: MatAutocompleteSelectedEvent): void {
-
-    const prev = this.area.nativeElement.value;
-    const curor = this.area.nativeElement.selectionStart;
-    const eventa = event.option.value as string;
-
-    console.log(prev, curor, eventa);
-
-    this.toBe = this.text.slice(0, this.cursor) + '@' + eventa + this.text.slice(this.cursor);
-
-    this.cursor += eventa.length + 1;
-
-    console.log(event);
-
-    this.myControl.setValue(this.toBe);
-    this.area.nativeElement.value = this.toBe;
-    // this.post.text = this.toBe;
-
-
-    this.success = true;
-    // alert('');
-    // this.show = false;
-  }
-
 }

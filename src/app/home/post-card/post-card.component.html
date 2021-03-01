@@ -2,17 +2,17 @@
 
   <mat-card-header>
     <mat-card-subtitle>{{ post.date }}</mat-card-subtitle>
-    <button mat-icon-button (click)="editPost(post)" class="card-action" *ngIf="!post.editing">
+    <button mat-icon-button (click)="editPost(post)" class="card-action" *ngIf="!editing">
       <mat-icon>edit</mat-icon>
     </button>
   </mat-card-header>
 
-  <mat-card-content *ngIf="post.editing">
+  <mat-card-content *ngIf="editing">
     <app-post-textarea [post]="post"></app-post-textarea>
   </mat-card-content>
 
-  <mat-card-content *ngIf="!post.editing">
-    <ng-container *ngFor="let segment of post.segments">
+  <mat-card-content *ngIf="!editing">
+    <ng-container *ngFor="let segment of segments">
       <span *ngIf="segment.employee" class="user-highlight" (click)="openEmployeeDetails(segment.employee)">
         {{ segment.text }}
       </span>
@@ -22,9 +22,9 @@
     </ng-container>
   </mat-card-content>
 
-  <mat-card-actions *ngIf="post.editing">
+  <mat-card-actions *ngIf="editing">
     <button mat-button color="warn" (click)="cancelEdit(post)">CANCEL</button>
-    <button mat-button color="accent">UPDATE POST</button>
+    <button mat-button color="accent" (click)="update()">UPDATE POST</button>
   </mat-card-actions>
 
 </mat-card>

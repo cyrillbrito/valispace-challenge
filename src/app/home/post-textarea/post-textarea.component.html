@@ -1,11 +1,11 @@
 <mat-form-field appearance="outline">
-  <textarea #area matInput placeholder="What’s happening?" rows="5" (keydown.@)="test2()" [matAutocomplete]="auto"
+  <textarea #textarea matInput placeholder="What’s happening?" rows="5" (keydown.@)="open()" [matAutocomplete]="auto"
     [matAutocompleteDisabled]="!show" [(ngModel)]="post.text">
   </textarea>
 </mat-form-field>
 
-<mat-autocomplete #auto="matAutocomplete" (closed)="test4($event)" (optionSelected)="test3($event)">
-  <mat-option *ngFor="let employee of employeesOptions$ | async" [value]="employee.username">
+<mat-autocomplete #auto="matAutocomplete" (closed)="close($event)" (optionSelected)="optionSelected($event)">
+  <mat-option *ngFor="let employee of employees$ | async" [value]="employee.username">
     {{ employee.username }}
   </mat-option>
 </mat-autocomplete>

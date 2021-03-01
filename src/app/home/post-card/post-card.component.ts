@@ -1,7 +1,8 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { Employee, PostToView } from 'src/app/models';
+import { Employee, Post, PostSegment } from 'src/app/models';
 import { PostsService } from 'src/app/services/posts.service';
+
 
 @Component({
   selector: 'app-post-card',
@@ -10,29 +11,42 @@ import { PostsService } from 'src/app/services/posts.service';
 })
 export class PostCardComponent implements OnInit {
 
-  @Input() post: PostToView;
-
+  @Input() post: Post;
 
   @ViewChild('details', { static: false }) detailsTemplateRef: TemplateRef<any>;
+
+  public segments: PostSegment[];
+  public editing: boolean;
+
+  private original: string;
 
   constructor(
     private postsService: PostsService,
     public dialog: MatDialog,
   ) { }
 
-  ngOnInit() {
+  public ngOnInit() {
+    this.segments = this.postsService.getPostSegments(this.post);
   }
 
-
-  openEmployeeDetails(employee: Employee): void {
+  public openEmployeeDetails(employee: Employee): void {
     this.dialog.open(this.detailsTemplateRef, { data: employee });
   }
 
-  editPost(post: PostToView): void {
-    post.editing = true;
+  public editPost(post: Post): void {
+    this.editing = true;
+    this.original = post.text;
   }
 
-  cancelEdit(post: PostToView): void {
-    post.editing = false;
+  public cancelEdit(post: Post): void {
+    post.text = this.original;
+    this.editing = false;
+  }
+
+  public update(): void {
+    this.postsService.update(this.post).subscribe(() => {
+      this.segments = this.postsService.getPostSegments(this.post);
+      this.editing = false;
+    });
   }
 }

@@ -8,14 +8,9 @@ export interface Employee {
 }
 
 export interface Post {
+  id: number;
   date: string;
   text: string;
-}
-
-export interface PostToView {
-  date: string;
-  segments: PostSegment[];
-  editing?: boolean;
 }
 
 export interface PostSegment {
