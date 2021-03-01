@@ -3,12 +3,19 @@
 }
 
 .user-highlight {
-  text-decoration: underline;
-  color: blue;
+  color: rgb(27, 149, 224);
   cursor: pointer;
+}
+
+.user-highlight:hover {
+  text-decoration: underline;
 }
 
 .card-action {
   margin-left: auto;
   margin-top: -10px;
+}
+
+.mat-card .mat-button {
+  margin-left: 8px;
 }

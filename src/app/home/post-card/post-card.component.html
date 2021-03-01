@@ -1,30 +1,32 @@
 <mat-card>
+
   <mat-card-header>
-
     <mat-card-subtitle>{{ post.date }}</mat-card-subtitle>
-
     <button mat-icon-button (click)="editPost(post)" class="card-action" *ngIf="!post.editing">
       <mat-icon>edit</mat-icon>
     </button>
   </mat-card-header>
-  <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+
   <mat-card-content *ngIf="post.editing">
     <app-post-textarea [post]="post"></app-post-textarea>
   </mat-card-content>
-  <mat-card-content *ngIf="!post.editing">
-    <p>
-      <ng-container *ngFor="let segment of post.segments">
-        {{ segment.text }}
 
-        <span *ngIf="segment.employee" class="user-highlight" (click)="openEmployeeDetails(segment.employee)">{{
-          segment.text }}</span>
+  <mat-card-content *ngIf="!post.editing">
+    <ng-container *ngFor="let segment of post.segments">
+      <span *ngIf="segment.employee" class="user-highlight" (click)="openEmployeeDetails(segment.employee)">
+        {{ segment.text }}
+      </span>
+      <ng-container *ngIf="!segment.employee">
+        {{ segment.text }}
       </ng-container>
-    </p>
+    </ng-container>
   </mat-card-content>
+
   <mat-card-actions *ngIf="post.editing">
-    <button mat-button class="card-action" (click)="cancelEdit(post)">CANCEL</button>
-    <button mat-button class="card-action">UPDATE POST</button>
+    <button mat-button color="warn" (click)="cancelEdit(post)">CANCEL</button>
+    <button mat-button color="accent">UPDATE POST</button>
   </mat-card-actions>
+
 </mat-card>
 
 <ng-template #details let-employee>
@@ -33,5 +35,4 @@
   <p>Username: {{ employee.username }}</p>
   <p>Phone: {{ employee.phone }}</p>
   <p>Role: {{ employee.role }}</p>
-
 </ng-template>

@@ -11,7 +11,7 @@ body {
   background-color: rgb(250 250 250);
 }
 
-app-home .mat-card-content {
+app-root .mat-card-content {
   margin-bottom: 0px;
 }
 
