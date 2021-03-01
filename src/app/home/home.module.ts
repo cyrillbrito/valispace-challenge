@@ -12,12 +12,17 @@ import {
   MatInputModule
 } from '@angular/material';
 import { HomeRoutingModule } from './home-routing.module';
-import { HomeComponent } from './home.component';
+import { PostCardComponent } from './post-card/post-card.component';
 import { PostTextareaComponent } from './post-textarea/post-textarea.component';
+import { PostsComponent } from './posts/posts.component';
 
 
 @NgModule({
-  declarations: [HomeComponent, PostTextareaComponent],
+  declarations: [
+    PostCardComponent,
+    PostsComponent,
+    PostTextareaComponent,
+  ],
   imports: [
     CommonModule,
     HomeRoutingModule,
@@ -28,7 +33,6 @@ import { PostTextareaComponent } from './post-textarea/post-textarea.component';
     MatDividerModule,
     MatFormFieldModule,
     MatInputModule,
-    // ReactiveFormsModule,
     FormsModule,
     MatIconModule,
     MatButtonModule,

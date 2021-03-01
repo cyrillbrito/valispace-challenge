@@ -1,25 +1,6 @@
 <mat-card>
   <mat-card-header>
 
-    <mat-card-title>Create Post</mat-card-title>
-    <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
-
-  </mat-card-header>
-  <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
-  <mat-card-content>
-    <app-post-textarea [(post)]="post"></app-post-textarea>
-
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-button (click)="createPost()" class="card-action">CREATE POST</button>
-  </mat-card-actions>
-</mat-card>
-
-<mat-divider></mat-divider>
-
-<mat-card *ngFor="let post of posts$ | async">
-  <mat-card-header>
-
     <mat-card-subtitle>{{ post.date }}</mat-card-subtitle>
 
     <button mat-icon-button (click)="editPost(post)" class="card-action" *ngIf="!post.editing">
@@ -46,7 +27,7 @@
   </mat-card-actions>
 </mat-card>
 
-<ng-template #templateRef let-employee>
+<ng-template #details let-employee>
   <h1>{{ employee.name }}</h1>
   <mat-divider></mat-divider>
   <p>Username: {{ employee.username }}</p>
