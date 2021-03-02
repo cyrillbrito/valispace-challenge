@@ -12,7 +12,6 @@ import { EmployeesService } from '../../services/employees.service';
 export class EmployeeListComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'username', 'phone', 'role', 'name', 'action'];
-  // dataSource = ELEMENT_DATA;
 
   public employees$: Observable<Employee[]>;
 
@@ -27,6 +26,11 @@ export class EmployeeListComponent implements OnInit {
 
   navToEdit(employee: Employee): void {
     this.router.navigate(['admin', employee.id]);
+  }
+
+  public delete(employee: Employee): void {
+    this.employeesService.delete(employee)
+      .subscribe(() => this.employees$ = this.employeesService.list());
   }
 
 }

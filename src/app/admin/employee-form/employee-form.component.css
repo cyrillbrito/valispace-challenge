@@ -1,4 +1,33 @@
-form {
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+button {
+  margin-left: 20px;
+}
+
+
+.mat-elevation-z8 {
+  background-color: white;
   display: flex;
   flex-direction: column;
+  padding: 40px;
+}
+
+mat-form-field {
+  margin-bottom: 15px;
+}
+
+
+/* Hide input number arrows */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
 }

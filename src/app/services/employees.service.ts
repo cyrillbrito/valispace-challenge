@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Employee } from '../models';
 
@@ -36,19 +36,44 @@ export class EmployeesService {
     return this.list().pipe(map(employees => employees.find(e => e.id === id)));
   }
 
-  public add(employee: Employee): Observable<void> {
+  public create(employee: Employee): Observable<void> {
     return this.list().pipe(map(employees => {
+
+      if (employees.some(e => e.id === employee.id)) {
+        throw Error('same id');
+      }
+
+      if (employees.some(e => e.phone === employee.phone)) {
+        throw Error('same phone');
+      }
+
       employees.push(employee);
       localStorage.setItem('valispace-challenge-employees', JSON.stringify(employees));
     }));
   }
 
-  public edit(): Observable<void> {
-    return of();
+  public update(employee: Employee): Observable<void> {
+    return this.list().pipe(map(employees => {
+
+      if (employees.some(e => e.phone === employee.phone)) {
+        throw Error('same phone');
+      }
+
+      const index = employees.findIndex(e => e.id === employee.id);
+      employees[index] = employee;
+
+      localStorage.setItem('valispace-challenge-employees', JSON.stringify(employees));
+    }));
   }
 
-  public remove(): Observable<void> {
-    return of();
+  public delete(employee: Employee): Observable<void> {
+    return this.list().pipe(map(employees => {
+
+      const index = employees.findIndex(e => e.id === employee.id);
+      employees.splice(index, 1);
+
+      localStorage.setItem('valispace-challenge-employees', JSON.stringify(employees));
+    }));
   }
 
 }

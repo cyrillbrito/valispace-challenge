@@ -1,34 +1,63 @@
-<p>employee works!</p>
-
 <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
 
-  <button mat-raised-button color="accent" type="submit">Accent</button>
+  <div class="header">
+    <h1>{{ isCreate ? 'Create Employee' : 'Edit Employee' }}</h1>
+    <div>
+      <button mat-raised-button (click)="goBack()">
+        CANCEL
+      </button>
+      <button mat-raised-button color="accent" type="submit">
+        SAVE
+      </button>
+    </div>
+  </div>
 
-  <mat-form-field>
-    <input matInput type="number" placeholder="Id" formControlName="id">
-  </mat-form-field>
 
-  <mat-form-field>
-    <input matInput placeholder="Username" formControlName="username">
-  </mat-form-field>
+  {{ idError | json}}
+  <div class="mat-elevation-z8">
 
-  <mat-form-field>
-    <input matInput placeholder="Phone" formControlName="phone">
-  </mat-form-field>
+    <mat-form-field>
+      <input matInput type="number" placeholder="Id" formControlName="id">
+      <mat-error *ngIf="form.controls.id.hasError('required')">
+        is required
+      </mat-error>
+      <mat-error *ngIf="form.controls.id.hasError('unique')">
+        is already in use
+      </mat-error>
+    </mat-form-field>
 
-  <mat-form-field>
-    <input matInput placeholder="Role" formControlName="role">
-  </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Username" formControlName="username">
+      <mat-error *ngIf="form.controls.username.hasError('required')">
+        is required
+      </mat-error>
+      <mat-error *ngIf="form.controls.username.hasError('pattern')">
+        can only have letters, numbers, -, _
+      </mat-error>
+    </mat-form-field>
 
-  <mat-form-field>
-    <input matInput placeholder="Name" formControlName="name">
-  </mat-form-field>
+    <mat-form-field>
+      <input matInput type="number" placeholder="Phone" formControlName="phone">
+      <mat-error *ngIf="form.controls.phone.hasError('required')">
+        is required
+      </mat-error>
+      <mat-error *ngIf="form.controls.phone.hasError('unique')">
+        is already in use
+      </mat-error>
+    </mat-form-field>
 
+    <mat-form-field>
+      <input matInput placeholder="Role" formControlName="role">
+      <mat-error *ngIf="form.controls.role.hasError('required')">
+        is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Name" formControlName="name">
+      <mat-error *ngIf="form.controls.name.hasError('required')">
+        is required
+      </mat-error>
+    </mat-form-field>
+  </div>
 </form>
-
-<!-- <div class="example-container">
-  <mat-form-field>
-    <input matInput placeholder="Enter your email" [formControl]="email" required>
-    <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
-  </mat-form-field>
-</div> -->

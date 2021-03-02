@@ -63,7 +63,7 @@ export class PostsService {
 
   private parsePostToSave(post: Post): Post {
 
-    const regExp = /@[\w\-_]+/gi;
+    const regExp = /@[\w\-_]+/g;
     const matches = post.text.match(regExp);
 
     if (matches) {

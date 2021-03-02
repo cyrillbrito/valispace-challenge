@@ -16,3 +16,7 @@ table {
 .mat-stroked-button {
   margin-right: 10px;
 }
+
+.actions-col {
+  width: 90px;
+}
