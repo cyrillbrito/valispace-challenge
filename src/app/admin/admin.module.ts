@@ -3,15 +3,14 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatTableModule } from '@angular/material';
 import { AdminRoutingModule } from './admin-routing.module';
-import { AdminComponent } from './admin.component';
-import { EmployeeComponent } from './employee/employee.component';
-
+import { EmployeeFormComponent } from './employee-form/employee-form.component';
+import { EmployeeListComponent } from './employee-list/employee-list.component';
 
 
 @NgModule({
   declarations: [
-    AdminComponent,
-    EmployeeComponent,
+    EmployeeFormComponent,
+    EmployeeListComponent,
   ],
   imports: [
     AdminRoutingModule,

@@ -5,11 +5,11 @@ import { Employee } from 'src/app/models';
 import { EmployeesService } from 'src/app/services/employees.service';
 
 @Component({
-  selector: 'app-employee',
-  templateUrl: './employee.component.html',
-  styleUrls: ['./employee.component.css']
+  selector: 'app-employee-form',
+  templateUrl: './employee-form.component.html',
+  styleUrls: ['./employee-form.component.css']
 })
-export class EmployeeComponent implements OnInit {
+export class EmployeeFormComponent implements OnInit {
 
   public form: FormGroup;
 

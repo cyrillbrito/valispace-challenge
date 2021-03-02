@@ -5,10 +5,10 @@ import { Employee, Post, PostSegment } from '../models';
 import { EmployeesService } from './employees.service';
 
 const INITIAL_DATA: Post[] = [
-  { id: 1, date: new Date(2021, 2, 1).toLocaleString(), text: 'Welcome to the company @1!!!' },
-  { id: 2, date: new Date(2021, 2, 2).toLocaleString(), text: 'Thanks, @2, @3, @4' },
-  { id: 3, date: new Date(2021, 2, 3).toLocaleString(), text: '@3 @2 @5' },
-  { id: 3, date: new Date(2021, 2, 3).toLocaleString(), text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.Ut tortor augue, commodo id commodo vitae, aliquam sit amet neque.Sed eu bibendum arcu.Suspendisse non tincidunt ligula.Praesent vel ipsum velit.Proin ante lacus, vulputate et accumsan sed, facilisis quis eros.Proin et imperdiet ipsum.Proin eget dictum lacus.Phasellus elementum eros eget urna faucibus luctus.Praesent ac sollicitudin nisi, at laoreet enim.Suspendisse potenti.Pellentesque efficitur tellus ac purus imperdiet luctus.Vestibulum id nulla ut est porta hendrerit.Aliquam pulvinar pretium diam at aliquam.' },
+  { id: 4, date: new Date(2021, 2, 4).toLocaleString(), text: 'Welcome to the company @1!!!' },
+  { id: 3, date: new Date(2021, 2, 3).toLocaleString(), text: 'Thanks, @2, @3, @4' },
+  { id: 2, date: new Date(2021, 2, 2).toLocaleString(), text: '@3 @2 @5' },
+  { id: 1, date: new Date(2021, 2, 1).toLocaleString(), text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.Ut tortor augue, commodo id commodo vitae, aliquam sit amet neque.Sed eu bibendum arcu.Suspendisse non tincidunt ligula.Praesent vel ipsum velit.Proin ante lacus, vulputate et accumsan sed, facilisis quis eros.Proin et imperdiet ipsum.Proin eget dictum lacus.Phasellus elementum eros eget urna faucibus luctus.Praesent ac sollicitudin nisi, at laoreet enim.Suspendisse potenti.Pellentesque efficitur tellus ac purus imperdiet luctus.Vestibulum id nulla ut est porta hendrerit.Aliquam pulvinar pretium diam at aliquam.' },
 ];
 
 @Injectable({
@@ -44,7 +44,7 @@ export class PostsService {
       post.id = posts[posts.length - 1].id + 1;
       this.parsePostToSave(post);
 
-      posts.push(post);
+      posts.unshift(post);
       localStorage.setItem('valispace-challenge-posts', JSON.stringify(posts));
     }));
   }

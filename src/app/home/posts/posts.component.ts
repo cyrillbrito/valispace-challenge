@@ -26,7 +26,10 @@ export class PostsComponent implements OnInit {
 
   createPost(): void {
     this.post.date = new Date().toLocaleString();
-    this.postsService.create(this.post).subscribe();
+    this.postsService.create(this.post).subscribe(() => {
+      this.post = {} as Post;
+      this.posts$ = this.postsService.list();
+    });
   }
 
 }
