@@ -55,7 +55,7 @@ export class EmployeesService {
   public update(employee: Employee): Observable<void> {
     return this.list().pipe(map(employees => {
 
-      if (employees.some(e => e.phone === employee.phone)) {
+      if (employees.some(e => e.id !== employee.id && e.phone === employee.phone)) {
         throw Error('same phone');
       }
 

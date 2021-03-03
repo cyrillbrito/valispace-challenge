@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Employee, Post, PostSegment } from '../models';
+import { Post, PostSegment } from '../models';
 import { EmployeesService } from './employees.service';
 
 const INITIAL_DATA: Post[] = [
@@ -16,14 +16,9 @@ const INITIAL_DATA: Post[] = [
 })
 export class PostsService {
 
-  private employees: Employee[];
-
   constructor(
     private employeesService: EmployeesService,
-  ) {
-    this.employeesService.list().subscribe(employees => this.employees = employees);
-  }
-
+  ) { }
 
   public list(): Observable<Post[]> {
 
@@ -39,10 +34,14 @@ export class PostsService {
 
   public create(post: Post): Observable<void> {
 
-    return this.list().pipe(map(posts => {
+    return forkJoin([
+      this.list(),
+      this.parsePostToSave(post)
+    ]).pipe(map(results => {
+
+      const [posts] = results;
 
       post.id = posts[posts.length - 1].id + 1;
-      this.parsePostToSave(post);
 
       posts.unshift(post);
       localStorage.setItem('valispace-challenge-posts', JSON.stringify(posts));
@@ -61,55 +60,59 @@ export class PostsService {
     }));
   }
 
-  private parsePostToSave(post: Post): Post {
+  private parsePostToSave(post: Post): Observable<void> {
 
-    const regExp = /@[\w\-_]+/g;
-    const matches = post.text.match(regExp);
+    return this.employeesService.list().pipe(map(employees => {
 
-    if (matches) {
-      for (const match of matches) {
-        const username = match.slice(1);
-        const employee = this.employees.find(e => e.username === username);
-        if (employee) {
-          const index = post.text.indexOf(match);
-          post.text = this.replaceInIndex(post.text, index + 1, employee.id, username.length);
+      const regExp = /@[\w\-_]+/g;
+      const matches = post.text.match(regExp);
+
+      if (matches) {
+        for (const match of matches) {
+          const username = match.slice(1);
+          const employee = employees.find(e => e.username === username);
+          if (employee) {
+            const index = post.text.indexOf(match);
+            post.text = this.replaceInIndex(post.text, index + 1, employee.id, username.length);
+          }
         }
       }
-    }
-
-    return post;
+    }));
   }
 
-  public getPostSegments(post: Post): PostSegment[] {
+  public getPostSegments(post: Post): Observable<PostSegment[]> {
 
-    const segments: PostSegment[] = [];
+    return this.employeesService.list().pipe(map(employees => {
 
-    const regExp = /@\d+/g;
-    const matches = post.text.match(regExp);
+      const segments: PostSegment[] = [];
 
-    let lastIndex = 0;
+      const regExp = /@\d+/g;
+      const matches = post.text.match(regExp);
 
-    if (matches) {
-      for (const match of matches) {
-        const id = Number(match.slice(1));
-        const employee = this.employees.find(e => e.id === id);
-        if (employee) {
-          const index = post.text.indexOf(match, lastIndex);
-          if (lastIndex < index) {
-            segments.push({ text: post.text.substr(lastIndex, index - lastIndex) });
+      let lastIndex = 0;
+
+      if (matches) {
+        for (const match of matches) {
+          const id = Number(match.slice(1));
+          const employee = employees.find(e => e.id === id);
+          if (employee) {
+            const index = post.text.indexOf(match, lastIndex);
+            if (lastIndex < index) {
+              segments.push({ text: post.text.substr(lastIndex, index - lastIndex) });
+            }
+            segments.push({ text: '@' + employee.username, employee });
+            post.text = this.replaceInIndex(post.text, index + 1, employee.username, match.length - 1);
+            lastIndex = index + employee.username.length + 1;
           }
-          segments.push({ text: '@' + employee.username, employee });
-          post.text = this.replaceInIndex(post.text, index + 1, employee.username, match.length - 1);
-          lastIndex = index + employee.username.length + 1;
         }
       }
-    }
 
-    if (lastIndex < post.text.length) {
-      segments.push({ text: post.text.substr(lastIndex, post.text.length - lastIndex) });
-    }
+      if (lastIndex < post.text.length) {
+        segments.push({ text: post.text.substr(lastIndex, post.text.length - lastIndex) });
+      }
 
-    return segments;
+      return segments;
+    }));
   }
 
   private replaceInIndex(str: string, index: number, replacer: any, length: number): string {

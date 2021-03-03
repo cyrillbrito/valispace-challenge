@@ -26,7 +26,7 @@ export class PostCardComponent implements OnInit {
   ) { }
 
   public ngOnInit() {
-    this.segments = this.postsService.getPostSegments(this.post);
+    this.postsService.getPostSegments(this.post).subscribe(segments => this.segments = segments);
   }
 
   public openEmployeeDetails(employee: Employee): void {
@@ -45,7 +45,7 @@ export class PostCardComponent implements OnInit {
 
   public update(): void {
     this.postsService.update(this.post).subscribe(() => {
-      this.segments = this.postsService.getPostSegments(this.post);
+      this.postsService.getPostSegments(this.post).subscribe(segments => this.segments = segments);
       this.editing = false;
     });
   }
