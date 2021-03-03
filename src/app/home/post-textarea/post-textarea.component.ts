@@ -18,6 +18,7 @@ export class PostTextareaComponent implements OnInit {
   public employees$: Observable<Employee[]>;
   public show: boolean;
 
+  public isPhone: boolean;
   private original: string;
   private cursor: number;
   private success: boolean;
@@ -30,16 +31,28 @@ export class PostTextareaComponent implements OnInit {
     this.employees$ = this.employeesService.list();
   }
 
-  open(): void {
-    this.show = true;
-
-    this.original = this.post.text;
-    this.cursor = this.textarea.nativeElement.selectionStart;
+  open(event: KeyboardEvent): void {
+    if (event.key === '@' || event.key === '#') {
+      this.show = true;
+      this.isPhone = event.key === '#';
+      this.original = this.post.text;
+      this.cursor = this.textarea.nativeElement.selectionStart;
+    }
   }
 
   optionSelected(event: MatAutocompleteSelectedEvent): void {
-    const selected = event.option.value;
-    this.post.text = this.original.slice(0, this.cursor) + '@' + selected + this.original.slice(this.cursor);
+
+    const employee: Employee = event.option.value;
+
+    const s1 = this.original.slice(0, this.cursor);
+    const s2 = this.original.slice(this.cursor);
+
+    if (this.isPhone) {
+      this.post.text = `${s1}#${employee.phone}${s2}`;
+    } else {
+      this.post.text = `${s1}@${employee.username}${s2}`;
+    }
+
     this.success = true;
   }
 
