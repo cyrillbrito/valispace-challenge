@@ -13,23 +13,25 @@ export class PostsComponent implements OnInit {
 
   posts$: Observable<Post[]>;
 
-  post = {} as Post;
+  post = { text: '' } as Post;
 
   constructor(
     private postsService: PostsService,
     public dialog: MatDialog,
   ) { }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.posts$ = this.postsService.list();
   }
 
-  createPost(): void {
-    this.post.date = new Date().toLocaleString();
-    this.postsService.create(this.post).subscribe(() => {
-      this.post = {} as Post;
-      this.posts$ = this.postsService.list();
-    });
+  public createPost(): void {
+    if (this.post.text.length) {
+      this.post.date = new Date().toLocaleString();
+      this.postsService.create(this.post).subscribe(() => {
+        this.post = { text: '' } as Post;
+        this.posts$ = this.postsService.list();
+      });
+    }
   }
 
 }

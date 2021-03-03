@@ -4,7 +4,7 @@
   </textarea>
 </mat-form-field>
 
-<mat-autocomplete #auto="matAutocomplete" (closed)="close($event)" (optionSelected)="optionSelected($event)">
+<mat-autocomplete #auto="matAutocomplete" (closed)="close()" (optionSelected)="optionSelected($event)">
   <mat-option *ngFor="let employee of employees$ | async" [value]="employee.username">
     {{ employee.username }}
   </mat-option>

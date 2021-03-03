@@ -1,27 +1,43 @@
-# ValispaceChallenge
+# Valispace Challenge
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.29.
+This is my solution for the following challenge.
 
-## Development server
+> The challenge consists of creating a simple post timeline. The posts consist of text but it can
+also refer to data from employees, such as username. The employees can be added and
+removed from the database (can be saved in local storage, no backend required). No logins
+or other securities are required.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+This challenge was requested by [Valispace](https://www.valispace.com/) and is part of the recruiting process.
 
-## Code scaffolding
+### ✨ [Demo](https://cyrillbrito.github.io/valispace-challenge/)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Requirements
 
-## Build
+**Admin**
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+- [ ] All fields (see below) are required;
+- [ ] ID and Phone are unique;
+- [ ] ID cannot be changed but all the other values can;
+- [ ] Username is only valid with the format [\w-_]+
 
-## Running unit tests
+**Home**
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- [ ] By typing ‘@’ inside a new post there should popup an autocomplete to help user
+select an employee to refer in the post;
+- [ ] When changing the username of an employee, it should reflect in already created
+posts. A possible solution is saving the text of the post as <employee id=”1”
+field=”username”></employee> instead of @mathilde, or #992312312;
+- [ ] By typing ‘#’ it should popup an autocomplete to help user select the phone number;
+- [ ] Inside the post, when hovering the username or name of an employee a popup
+should show with the full details of that employee (name, username, phone, role);
+- [ ] Possibility to edit already posted messages.
 
-## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+## Running locally
 
-## Further help
+First make sure to have Node installed.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+```sh
+npm install
+npm run start
+```
