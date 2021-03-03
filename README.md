@@ -9,7 +9,7 @@ or other securities are required.
 
 This challenge was requested by [Valispace](https://www.valispace.com/) as part of the recruiting process.
 
-### ✨ [Demo](https://cyrillbrito.github.io/valispace-challenge/)
+### ✨ [Live Demo](https://cyrillbrito.github.io/valispace-challenge/)
 
 ## Requirements
 
@@ -34,11 +34,10 @@ ID | USERNAME | PHONE | ROLE | NAME
 - [x] By typing '@' inside a new post there should popup an autocomplete to help user select an employee to refer in the post
 - [x] When changing the username of an employee, it should reflect in already created posts
 - [ ] By typing '#' it should popup an autocomplete to help user select the phone number
+- [x] Possibility to edit already posted messages
 - [x] Inside the post, when hovering the username or name of an employee a popup should show with the full details of that employee (name, username, phone, role)
 
 **Note:** Instead of on hover, the popup only shows on click. On hover could be achieved using the cdk overlay but because of time constrains it was easier to do on click.
-
-- [x] Possibility to edit already posted messages
 
 
 ## Running locally
